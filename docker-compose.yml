@@ -15,7 +15,7 @@ services:
 
   mcp-server:
     build:
-      context: ./server
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"

@@ -1,0 +1,186 @@
+{
+  "name": "Demo: My first AI Agent in n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5b410409-5b0b-47bd-b413-5b9b1000a063",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        -160
+      ],
+      "webhookId": "a889d2ae-2159-402f-b326-5f61e90f602e"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.chatInput }}",
+        "options": {
+          "systemMessage": "=You're a helpful assistant that helps the user answer questions."
+        }
+      },
+      "id": "29963449-1dc1-487d-96f2-7ff0a5c3cd97",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        560,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.sessionToken }}"
+      },
+      "id": "75481370-bade-4d90-a878-3a3b0201edcc",
+      "name": "Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        660,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "model": "DeepSeekR1",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        500,
+        220
+      ],
+      "id": "e33cc6c8-0c89-4102-8859-22379a47129c",
+      "name": "Azure DeepSeekR1 Chat Model",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "zHNKf7b7aaUtDfq0",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "http://host.docker.internal:8000/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        820,
+        220
+      ],
+      "id": "41902d9b-adc2-4c2b-bfd5-c4699087d60c",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "937b4a9c-94b6-4d36-83ce-8fb5a1445b4d",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        360,
+        20
+      ],
+      "id": "60f04f5d-1894-4d88-9703-b52bbbef0d2f",
+      "name": "Webhook",
+      "webhookId": "937b4a9c-94b6-4d36-83ce-8fb5a1445b4d"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        20
+      ],
+      "id": "119f4b9b-b389-456b-ba47-453ea50c040e",
+      "name": "Respond to Webhook",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure DeepSeekR1 Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "59e6e78f-4869-4c89-a3ff-cc34d29a2924",
+  "meta": {
+    "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3d163b6be3b9ffe0e1dece23b3cdbd458ff4fa05a33cc96f4317d2391c56f7e9"
+  },
+  "id": "1bJdLkCL4ka2Pa8d",
+  "tags": []
+}
