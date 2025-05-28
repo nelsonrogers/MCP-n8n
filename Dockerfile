@@ -5,9 +5,8 @@ WORKDIR /app
 RUN pip install uv
 
 COPY requirements.txt .
-#RUN pip install --no-cache-dir -r requirements.txt
 
-RUN  uv venv
+RUN uv venv
 RUN uv pip install -r requirements.txt --system
 
 COPY . /app
