@@ -1,6 +1,6 @@
 # FastMCP Server
 
-This project implements a Model Context Protocol (MCP) server using FastMCP, allowing AI models to interact with your application through a standardized interface.
+This project implements a Model Context Protocol (MCP) server using FastMCP, allowing AI models to interact with custom tools in a standardised manner.
 
 ## Features
 
@@ -13,7 +13,7 @@ This project implements a Model Context Protocol (MCP) server using FastMCP, all
 ### Prerequisites
 
 - Python 3.11 or higher
-- Docker and Docker Compose (optional, for containerized deployment)
+- Docker and Docker Compose (optional, for containerised deployment)
 
 ### Installation
 #### Docker Deployment
